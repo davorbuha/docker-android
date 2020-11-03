@@ -46,6 +46,11 @@ RUN apt update -qq && apt install -qq -y --no-install-recommends \
         unzip \
     && rm -rf /var/lib/apt/lists/*;
 
+RUN echo "fs.inotify.max_user_instances=524288" >> /etc/sysctl.conf
+RUN echo "fs.inotify.max_user_watches=524288" >> /etc/sysctl.conf
+RUN echo "fs.inotify.max_queued_events=524288" >> /etc/sysctl.conf
+RUN sysctl -p
+
 # install nodejs and yarn packages from nodesource and yarn apt sources
 RUN curl -sL https://deb.nodesource.com/setup_${NODE_VERSION} | bash - \
     && echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list \
